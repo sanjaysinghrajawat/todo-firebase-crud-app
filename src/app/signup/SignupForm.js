@@ -2,6 +2,8 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 const SignupForm = () => {
 
     const [user, setUser] = useState({
@@ -13,7 +15,18 @@ const SignupForm = () => {
     const signupHandle = (e) => {
         e.preventDefault();
 
-        
+        if(!user.name){
+            toast.error("Enter Name", {position:"top-center", autoClose:2000});
+            return;
+        }
+        if(!user.email){
+            toast.error("Enter Email", {position:"top-center", autoClose:2000});
+            return;
+        }
+        if(!user.password){
+            toast.error("Enter Password", {position:"top-center", autoClose:2000});
+            return;
+        }
     }
 
     return (
