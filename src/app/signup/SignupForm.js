@@ -60,6 +60,7 @@ const SignupForm = () => {
                                         name:e.target.value,
                                     })
                                 }}
+                                value={user.name}
                             />
                         </div>
                         <div className="mt-10 pl-1 flex flex-col">
@@ -73,6 +74,7 @@ const SignupForm = () => {
                                         email:e.target.value,
                                     })
                                 }}
+                                value={user.email}
                             />
                         </div>
                         <div className="mt-10 pl-1 flex flex-col">
@@ -86,6 +88,7 @@ const SignupForm = () => {
                                         password:e.target.value,
                                     })
                                 }}
+                                value={user.password}
                             />
                         </div>
                         <button className="bg-black text-white w-44 py-4 mt-10 rounded-full transition-transform hover:bg-black/[0.8] active:scale-90">

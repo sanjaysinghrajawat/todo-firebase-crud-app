@@ -1,7 +1,29 @@
+"use client"
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 const LoginForm = () => {
+
+    const [user, setUser] = useState({
+        email: "",
+        password: ""
+    });
+
+    const loginHandle = (e) => {
+        e.preventDefault();
+
+        if (!user.email) {
+            toast.error("Enter Email", { position: "top-center", autoClose: 2000 });
+            return;
+        }
+        if (!user.password) {
+            toast.error("Enter Password", { position: "top-center", autoClose: 2000 });
+            return;
+        }
+    }
+
     return (
         <main className="flex lg:h-[100vh]">
             <div className="w-full lg:w-[60%] p-8 md:p-14 flex items-center justify-center lg:justify-start">
@@ -20,12 +42,20 @@ const LoginForm = () => {
                             Login with Google
                         </span>
                     </div>
-
+                    <form onSubmit={loginHandle}>
                     <div className="mt-10 pl-1 flex flex-col">
                         <label>Email</label>
                         <input
-                            type="text"
+                            type="email"
                             className="font-medium border-b border-black p-4 outline-0 focus-within:border-blue-400"
+                            onChange={(e) => {
+                                setUser({
+                                    ...user,
+                                    email: e.target.value,
+                                })
+                            }}
+                            value={user.password}
+
                         />
                     </div>
                     <div className="mt-10 pl-1 flex flex-col">
@@ -33,11 +63,19 @@ const LoginForm = () => {
                         <input
                             type="password"
                             className="font-medium border-b border-black p-4 outline-0 focus-within:border-blue-400"
+                            onChange={(e) => {
+                                setUser({
+                                    ...user,
+                                    password: e.target.value,
+                                })
+                            }}
+                            value={user.password}
                         />
                     </div>
                     <button className="bg-black text-white w-44 py-4 mt-10 rounded-full transition-transform hover:bg-black/[0.8] active:scale-90">
                         Sign in
                     </button>
+                    </form>
                 </div>
             </div>
             <div
