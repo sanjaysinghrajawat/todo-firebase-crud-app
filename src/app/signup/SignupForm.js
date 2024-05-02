@@ -1,10 +1,27 @@
 "use client"
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FcGoogle } from "react-icons/fc";
 import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
+import { createUserWithEmailAndPassword, updateProfile, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from "@/firebase/config";
+import { useAuth } from "@/firebase/authContext";
+import { useRouter } from "next/navigation";
+import Loader from "@/components/Loader";
+
 const SignupForm = () => {
+
+    const router = useRouter();
+    const {authUser, setAuthUser} = useAuth();
+    useEffect(()=>{
+        if(authUser)
+        {
+            router.push("/");
+        }
+    },[authUser])
+
+    const provider = new GoogleAuthProvider();
 
     const [user, setUser] = useState({
         name: "",
@@ -12,7 +29,7 @@ const SignupForm = () => {
         password: ""
     });
 
-    const signupHandle = (e) => {
+    const signupHandle = async (e) => {
         e.preventDefault();
 
         if(!user.name){
@@ -27,9 +44,32 @@ const SignupForm = () => {
             toast.error("Enter Password", {position:"top-center", autoClose:2000});
             return;
         }
+        const email = user.email;
+        const password = user.password;
+        const name = user.name;
+        try {
+            const user = await createUserWithEmailAndPassword(auth, email, password);
+            await updateProfile(auth.currentUser, {
+                displayName:name,
+            });
+            setAuthUser({
+                uid:user.uid,
+                email:user.email,
+                username:name
+            })
+            console.log(user);
+        } catch (error) {
+            console.log(error);
+        }
     }
 
-    return (
+    const signinWithGoogle = async () => {
+       
+        const user = await signInWithPopup(auth, provider);
+        console.log(user);
+    }
+
+    return (authUser) ? <Loader/> : (
         <main className="flex lg:h-[100vh]">
             <div className="w-full lg:w-[60%] p-8 md:p-14 flex items-center justify-center lg:justify-start">
                 <div className="p-8 w-[600px]">
@@ -41,7 +81,8 @@ const SignupForm = () => {
                         </Link>
                     </p>
 
-                    <div className="bg-black/[0.05] text-white w-full py-4 mt-10 rounded-full transition-transform hover:bg-black/[0.8] active:scale-90 flex justify-center items-center gap-4 cursor-pointer group">
+                    <div className="bg-black/[0.05] text-white w-full py-4 mt-10 rounded-full transition-transform hover:bg-black/[0.8] active:scale-90 flex justify-center items-center gap-4 cursor-pointer group"
+                    onClick={signinWithGoogle}>
                         <FcGoogle size={22} />
                         <span className="font-medium text-black group-hover:text-white">
                             Login with Google
