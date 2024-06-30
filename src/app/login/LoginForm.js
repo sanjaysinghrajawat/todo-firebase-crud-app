@@ -61,7 +61,7 @@ const LoginForm = () => {
         <main className="flex lg:h-[100vh]">
             <div className="w-full lg:w-[60%] p-8 md:p-14 flex items-center justify-center lg:justify-start">
                 <div className="p-8 w-[600px]">
-                    <h1 className="text-6xl font-semibold">Login !!!</h1>
+                    <h1 className="text-6xl font-semibold">Login</h1>
                     <p className="mt-6 ml-1">
                         Don't have an account ?{" "}
                         <Link href={"/signup"} className="underline hover:text-blue-400 cursor-pointer">
